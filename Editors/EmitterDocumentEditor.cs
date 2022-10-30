@@ -101,8 +101,17 @@ namespace ScalableEmitterEditorPlugin
             emitterQualityUltra.Checked += UltraButton_Click;
             UpdateToolbar();
 
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => emitterQualityLow.IsChecked = true ));
+            Loaded += EmitterDocumentEditor_Loaded;
             
+        }
+
+        private void EmitterDocumentEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            dynamic obj = asset.RootObject;
+            pgAsset.Object = obj.TemplateDataLow.Internal;
+            GetEmitterProcessors(pgAsset.Object);
+            activeQualityLevel = new bool[] { true, false, false, false };
+            emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
         }
 
         void GetEmitterProcessors(dynamic obj)
