@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Frosty.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using FrostySdk.Managers.Entries;
 
 namespace ScalableEmitterEditorPlugin
 {
@@ -327,7 +328,21 @@ namespace ScalableEmitterEditorPlugin
             {
                 new ToolbarItem("Show All", "", "", new RelayCommand((object state) => { ShowAllButton_Click(this, new RoutedEventArgs()); })),
                 new ToolbarItem("Show Editor", "", "", new RelayCommand((object state) => { LowButton_Click(this, new RoutedEventArgs()); })),
+                new ToolbarItem("Unify", "Unify Qualities", "", new RelayCommand((object state) => { UnifyButton_Click(this, new RoutedEventArgs()); })),
             };
+        }
+
+        private void UnifyButton_Click(object sender, RoutedEventArgs e)
+        {
+            dynamic obj = asset.RootObject;
+            obj.TemplateDataLow = obj.TemplateDataUltra;
+            obj.TemplateDataMedium = obj.TemplateDataUltra;
+            obj.TemplateDataHigh = obj.TemplateDataUltra;
+            UpdateToolbar();
+            AssetModified = true;
+            InvokeOnAssetModified();
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => emitterQualityLow.IsChecked = true));
         }
 
         private void ShowAllButton_Click(object sender, RoutedEventArgs e)
