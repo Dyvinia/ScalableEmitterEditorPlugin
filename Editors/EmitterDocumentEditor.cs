@@ -4,13 +4,10 @@ using FrostySdk.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using Frosty.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using FrostySdk.Managers.Entries;
 
 namespace ScalableEmitterEditorPlugin
 {
