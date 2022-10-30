@@ -349,6 +349,7 @@ namespace ScalableEmitterEditorPlugin
             InvokeOnAssetModified();
 
             Application.Current.Dispatcher.BeginInvoke(new Action(() => emitterQualityLow.IsChecked = true));
+            LowButton_Click(this, new RoutedEventArgs());
         }
 
         private void ShowAllButton_Click(object sender, RoutedEventArgs e)
