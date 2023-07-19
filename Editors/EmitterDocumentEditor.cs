@@ -105,13 +105,19 @@ namespace ScalableEmitterEditorPlugin
             
         }
 
+        private bool firstLoad = true;
+
         private void EmitterDocumentEditor_Loaded(object sender, RoutedEventArgs e)
         {
-            dynamic obj = asset.RootObject;
-            pgAsset.Object = obj.TemplateDataLow.Internal;
-            GetEmitterProcessors(pgAsset.Object);
-            activeQualityLevel = new bool[] { true, false, false, false };
-            emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+            if (firstLoad)
+            {
+                dynamic obj = asset.RootObject;
+                pgAsset.Object = obj.TemplateDataLow.Internal;
+                firstLoad = false;
+                GetEmitterProcessors(pgAsset.Object);
+                activeQualityLevel = new bool[] { true, false, false, false };
+                emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+            }
         }
 
         void GetEmitterProcessors(dynamic obj)
