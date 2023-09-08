@@ -22,16 +22,16 @@ namespace ScalableEmitterEditorPlugin
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool bValue = false;
-            if (value is bool)
+            if (value is bool v)
             {
-                bValue = (bool)value;
+                bValue = v;
             }
-            else if (value is Nullable<bool>)
+            else if (value is bool?)
             {
-                Nullable<bool> tmp = (Nullable<bool>)value;
-                bValue = tmp.HasValue ? tmp.Value : false;
+                bool? tmp = (bool?)value;
+                bValue = tmp ?? false;
             }
-            return (bValue) ? Visibility.Visible : Visibility.Hidden;
+            return (bValue) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

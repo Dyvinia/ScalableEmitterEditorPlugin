@@ -112,11 +112,13 @@ namespace ScalableEmitterEditorPlugin
             if (firstLoad)
             {
                 dynamic obj = asset.RootObject;
-                pgAsset.Object = obj.TemplateDataLow.Internal;
                 firstLoad = false;
-                GetEmitterProcessors(pgAsset.Object);
+                GetEmitterProcessors(obj.TemplateDataLow.Internal);
                 activeQualityLevel = new bool[] { true, false, false, false };
                 emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+
+                EmitterStackItems[0].ProcessorSelected = true;
+                pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
             }
         }
 
@@ -272,6 +274,7 @@ namespace ScalableEmitterEditorPlugin
                         item.ProcessorSelected = false;
                         item.EvaluatorSelected = false;
                     }
+                    EmitterStackItems[0].ProcessorSelected = true;
                     pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
                 }
             }
@@ -369,37 +372,45 @@ namespace ScalableEmitterEditorPlugin
         private void LowButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic obj = asset.RootObject;
-            pgAsset.Object = obj.TemplateDataLow.Internal;
-            GetEmitterProcessors(pgAsset.Object);
+            GetEmitterProcessors(obj.TemplateDataLow.Internal);
             activeQualityLevel = new bool[]{ true, false, false, false };
             emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+
+            EmitterStackItems[0].ProcessorSelected = true;
+            pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
         }
 
         private void MediumButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic obj = asset.RootObject;
-            pgAsset.Object = obj.TemplateDataMedium.Internal;
-            GetEmitterProcessors(pgAsset.Object);
+            GetEmitterProcessors(obj.TemplateDataMedium.Internal);
             activeQualityLevel = new bool[] { false, true, false, false };
             emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+
+            EmitterStackItems[0].ProcessorSelected = true;
+            pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
         }
 
         private void HighButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic obj = asset.RootObject;
-            pgAsset.Object = obj.TemplateDataHigh.Internal;
-            GetEmitterProcessors(pgAsset.Object);
+            GetEmitterProcessors(obj.TemplateDataHigh.Internal);
             activeQualityLevel = new bool[] { false, false, true, false };
             emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+
+            EmitterStackItems[0].ProcessorSelected = true;
+            pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
         }
 
         private void UltraButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic obj = asset.RootObject;
-            pgAsset.Object = obj.TemplateDataUltra.Internal;
-            GetEmitterProcessors(pgAsset.Object);
+            GetEmitterProcessors(obj.TemplateDataUltra.Internal);
             activeQualityLevel = new bool[] { false, false, false, true };
             emitterStackColumn.Width = new GridLength(2, GridUnitType.Star);
+
+            EmitterStackItems[0].ProcessorSelected = true;
+            pgAsset.SetClass(EmitterStackItems[0].EmitterItemObj);
         }
 
         #endregion
