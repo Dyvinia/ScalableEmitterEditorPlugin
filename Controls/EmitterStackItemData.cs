@@ -181,7 +181,17 @@ namespace ScalableEmitterEditorPlugin
                 });
 
                 if (prevProcessor != null) {
-                    prevProcessor.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+                    try {
+                        prevProcessor.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+                    }
+                    catch {
+                        try {
+                            prevProcessor.RootProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+                        }
+                        catch {
+                            return;
+                        }
+                    }
                     propertyGrid.Modified = true;
                 }
                 
@@ -225,9 +235,19 @@ namespace ScalableEmitterEditorPlugin
                     if (clipboardData is null)
                         return;
 
-                    clipboardData.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
-
-                    ((dynamic)EmitterItemObj).NextProcessor = new PointerRef(clipboardData);
+                    try {
+                        clipboardData.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+                        ((dynamic)EmitterItemObj).NextProcessor = new PointerRef(clipboardData);
+                    }
+                    catch {
+                        try {
+                            clipboardData.NextProcessor = ((dynamic)EmitterItemObj).RootProcessor;
+                            ((dynamic)EmitterItemObj).RootProcessor = new PointerRef(clipboardData);
+                        }
+                        catch {
+                            return;
+                        }
+                    }
 
                     propertyGrid.Modified = true;
                 }
