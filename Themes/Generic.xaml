@@ -142,6 +142,13 @@
                                 <Border x:Name="PART_ProcessorBox" BorderBrush="Transparent" BorderThickness="1" MinWidth="145" Height="21" Background="#FF454545" HorizontalAlignment="Left">
                                     <TextBlock x:Name="PART_ProcessorText" Margin="25,0,25,0" Text="{Binding Path=ProcessorText, Mode=TwoWay}" 
                                            HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <!--<MenuItem Header="Insert Paste Above" Command="{Binding Path=InsertPasteAboveCommand, Mode=TwoWay}"/>-->
+                                            <MenuItem Header="Copy" Command="{Binding Path=CopyCommand, Mode=TwoWay}"/>
+                                            <MenuItem Header="Insert Paste Below" Command="{Binding Path=InsertPasteBelowCommand, Mode=TwoWay}"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                 </Border>
 
                                 <!-- Processor selection border -->

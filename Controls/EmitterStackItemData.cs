@@ -1,9 +1,9 @@
-﻿using Frosty.Core.Controls;
+﻿using Frosty.Core;
+using Frosty.Core.Controls;
+using FrostySdk.Ebx;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ScalableEmitterEditorPlugin
 {
@@ -122,13 +122,17 @@ namespace ScalableEmitterEditorPlugin
 
         #region -- Constructors --
 
+        public ICommand CopyCommand { get; set; }
+        public ICommand InsertPasteAboveCommand { get; set; }
+        public ICommand InsertPasteBelowCommand { get; set; }
+
         /// <summary>
         /// Initializes an instance of the <see cref="EmitterStackItemData"/> class with a referenced object.
         /// </summary>
         /// <param name="obj">The processor or evaluator that this item represents</param>
         /// <param name="isRoot">Is this item the emitter base?</param>
         /// <param name="pg">The property grid to be updated</param>
-        public EmitterStackItemData(dynamic obj, bool isRoot, FrostyPropertyGrid pg)
+        public EmitterStackItemData(dynamic obj, bool isRoot, FrostyPropertyGrid pg, Action<object> refreshAction)
         {
             propertyGrid = pg;
             EmitterItemObj = obj;
@@ -157,6 +161,57 @@ namespace ScalableEmitterEditorPlugin
                     }
                 }
             }
+
+            CopyCommand = new RelayCommand((_) => {
+                FrostyClipboard.Current.SetData(new PointerRef(EmitterItemObj));
+            });
+
+            InsertPasteAboveCommand = new RelayCommand((_) => {
+                if (FrostyClipboard.Current.HasData) {
+
+                    dynamic clipboardData = FrostyClipboard.Current.GetData(pg.Asset, App.AssetManager.GetEbxEntry(pg.Asset.FileGuid));
+                    clipboardData = clipboardData?.Internal;
+
+                    if (clipboardData is null)
+                        return;
+
+                    clipboardData.NextProcessor = new PointerRef(EmitterItemObj);
+
+                    dynamic prevProcessor = pg.Asset.Objects.FirstOrDefault(o => {
+                        try {
+                            return ((dynamic)o).NextProcessor?.Internal == EmitterItemObj;
+                        }
+                        catch {
+                            try {
+                                return ((dynamic)o).RootProcessor?.Internal == EmitterItemObj;
+                            }
+                            catch { return false; }
+                        }
+                    });
+
+                    prevProcessor.NextProcessor = new PointerRef(clipboardData);
+
+                    propertyGrid.Modified = true;
+                }
+            } + refreshAction);
+
+            InsertPasteBelowCommand = new RelayCommand((_) => {
+                if (FrostyClipboard.Current.HasData) {
+
+                    dynamic clipboardData = FrostyClipboard.Current.GetData(pg.Asset, App.AssetManager.GetEbxEntry(pg.Asset.FileGuid));
+                    clipboardData = clipboardData?.Internal;
+
+                    if (clipboardData is null)
+                        return;
+
+                    clipboardData.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+
+                    ((dynamic)EmitterItemObj).NextProcessor = new PointerRef(clipboardData);
+
+                    propertyGrid.Modified = true;
+                }
+            }
+            + refreshAction);
         }
 
         #endregion

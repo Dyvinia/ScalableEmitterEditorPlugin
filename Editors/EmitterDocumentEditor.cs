@@ -128,17 +128,17 @@ namespace ScalableEmitterEditorPlugin
             EmitterStackItems.Clear();
 
             // add emitter base
-            EmitterStackItems.Add(new EmitterStackItemData(proc, true, pgAsset));
+            EmitterStackItems.Add(new EmitterStackItemData(proc, true, pgAsset, new Action<object>((_) => PgAsset_OnModified(null, null))));
             proc = proc.RootProcessor.Internal;
 
             // add root processor
             if (proc != null)
             {
-                EmitterStackItems.Add(new EmitterStackItemData(proc, false, pgAsset));
+                EmitterStackItems.Add(new EmitterStackItemData(proc, false, pgAsset, new Action<object>((_) => PgAsset_OnModified(null, null))));
                 proc = proc.NextProcessor.Internal;
                 while (proc != null)
                 {
-                    EmitterStackItems.Add(new EmitterStackItemData(proc, false, pgAsset));
+                    EmitterStackItems.Add(new EmitterStackItemData(proc, false, pgAsset, new Action<object>((_) => PgAsset_OnModified(null, null))));
                     proc = proc.NextProcessor.Internal;
                 }
             }
