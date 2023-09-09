@@ -147,6 +147,7 @@
                                             <!--<MenuItem Header="Insert Paste Above" Command="{Binding Path=InsertPasteAboveCommand, Mode=TwoWay}"/>-->
                                             <MenuItem Header="Copy" Command="{Binding Path=CopyCommand, Mode=TwoWay}"/>
                                             <MenuItem Header="Insert Paste Below" Command="{Binding Path=InsertPasteBelowCommand, Mode=TwoWay}"/>
+                                            <MenuItem Header="Delete" Command="{Binding Path=DeleteCommand, Mode=TwoWay}"/>
                                         </ContextMenu>
                                     </Border.ContextMenu>
                                 </Border>

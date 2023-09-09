@@ -123,6 +123,7 @@ namespace ScalableEmitterEditorPlugin
         #region -- Constructors --
 
         public ICommand CopyCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
         public ICommand InsertPasteAboveCommand { get; set; }
         public ICommand InsertPasteBelowCommand { get; set; }
 
@@ -165,6 +166,26 @@ namespace ScalableEmitterEditorPlugin
             CopyCommand = new RelayCommand((_) => {
                 FrostyClipboard.Current.SetData(new PointerRef(EmitterItemObj));
             });
+
+            DeleteCommand = new RelayCommand((_) => {
+                dynamic prevProcessor = pg.Asset.Objects.FirstOrDefault(o => {
+                    try {
+                        return ((dynamic)o).NextProcessor?.Internal == EmitterItemObj;
+                    }
+                    catch {
+                        try {
+                            return ((dynamic)o).RootProcessor?.Internal == EmitterItemObj;
+                        }
+                        catch { return false; }
+                    }
+                });
+
+                if (prevProcessor != null) {
+                    prevProcessor.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
+                    propertyGrid.Modified = true;
+                }
+                
+            } + refreshAction);
 
             InsertPasteAboveCommand = new RelayCommand((_) => {
                 if (FrostyClipboard.Current.HasData) {
