@@ -124,8 +124,7 @@ namespace ScalableEmitterEditorPlugin
 
         public ICommand CopyCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ICommand InsertPasteAboveCommand { get; set; }
-        public ICommand InsertPasteBelowCommand { get; set; }
+        public ICommand InsertPasteCommand { get; set; }
 
         /// <summary>
         /// Initializes an instance of the <see cref="EmitterStackItemData"/> class with a referenced object.
@@ -197,36 +196,7 @@ namespace ScalableEmitterEditorPlugin
                 
             } + refreshAction);
 
-            InsertPasteAboveCommand = new RelayCommand((_) => {
-                if (FrostyClipboard.Current.HasData) {
-
-                    dynamic clipboardData = FrostyClipboard.Current.GetData(pg.Asset, App.AssetManager.GetEbxEntry(pg.Asset.FileGuid));
-                    clipboardData = clipboardData?.Internal;
-
-                    if (clipboardData is null)
-                        return;
-
-                    clipboardData.NextProcessor = new PointerRef(EmitterItemObj);
-
-                    dynamic prevProcessor = pg.Asset.Objects.FirstOrDefault(o => {
-                        try {
-                            return ((dynamic)o).NextProcessor?.Internal == EmitterItemObj;
-                        }
-                        catch {
-                            try {
-                                return ((dynamic)o).RootProcessor?.Internal == EmitterItemObj;
-                            }
-                            catch { return false; }
-                        }
-                    });
-
-                    prevProcessor.NextProcessor = new PointerRef(clipboardData);
-
-                    propertyGrid.Modified = true;
-                }
-            } + refreshAction);
-
-            InsertPasteBelowCommand = new RelayCommand((_) => {
+            InsertPasteCommand = new RelayCommand((_) => {
                 if (FrostyClipboard.Current.HasData) {
 
                     dynamic clipboardData = FrostyClipboard.Current.GetData(pg.Asset, App.AssetManager.GetEbxEntry(pg.Asset.FileGuid));
