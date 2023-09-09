@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using Frosty.Controls;
 using System.Windows.Media;
+using System.Linq;
 
 namespace ScalableEmitterEditorPlugin
 {
@@ -148,6 +149,10 @@ namespace ScalableEmitterEditorPlugin
 
         private void PgAsset_OnModified(object sender, ItemModifiedEventArgs e)
         {
+            // remember selected item
+            dynamic selectedItem = EmitterStackItems.FirstOrDefault(i => i.ProcessorSelected == true)?.EmitterItemObj;
+            int selectedId = selectedItem?.__InstanceGuid?.InternalId ?? -1;
+
             EmitterStackItems.Clear();
             dynamic obj = asset.RootObject;
 
@@ -166,6 +171,13 @@ namespace ScalableEmitterEditorPlugin
             else if (activeQualityLevel[3])
             {
                 GetEmitterProcessors(obj.TemplateDataUltra.Internal);
+            }
+
+            try {
+                EmitterStackItems.FirstOrDefault(o => ((dynamic)o)?.EmitterItemObj?.__InstanceGuid?.InternalId == selectedId).ProcessorSelected = true;
+            }
+            catch {
+                EmitterStackItems[0].ProcessorSelected = true;
             }
         }
 
