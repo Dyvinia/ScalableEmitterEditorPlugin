@@ -24,6 +24,6 @@ using System.Windows;
 
 [assembly: PluginDisplayName("ScalableEmitterEditor")]
 [assembly: PluginAuthor("Brawltendo & Dyvinia")]
-[assembly: PluginVersion("1.1.1.0")]
+[assembly: PluginVersion("1.2.0")]
 
 [assembly: RegisterAssetDefinition("ScalableEmitterDocument", typeof(EmitterDocumentDefinition))]

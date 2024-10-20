@@ -207,12 +207,12 @@ namespace ScalableEmitterEditorPlugin
 
                     try {
                         clipboardData.NextProcessor = ((dynamic)EmitterItemObj).NextProcessor;
-                        ((dynamic)EmitterItemObj).NextProcessor = new PointerRef(clipboardData);
+                        ((dynamic)EmitterItemObj).NextProcessor = new PointerRef((object)clipboardData);
                     }
                     catch {
                         try {
                             clipboardData.NextProcessor = ((dynamic)EmitterItemObj).RootProcessor;
-                            ((dynamic)EmitterItemObj).RootProcessor = new PointerRef(clipboardData);
+                            ((dynamic)EmitterItemObj).RootProcessor = new PointerRef((object)clipboardData);
                         }
                         catch {
                             return;

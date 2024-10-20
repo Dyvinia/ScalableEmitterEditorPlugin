@@ -177,7 +177,7 @@ namespace ScalableEmitterEditorPlugin
                 EmitterStackItems.FirstOrDefault(o => ((dynamic)o)?.EmitterItemObj?.__InstanceGuid?.InternalId == selectedId).ProcessorSelected = true;
             }
             catch {
-                EmitterStackItems[0].ProcessorSelected = true;
+                //EmitterStackItems[0].ProcessorSelected = true;
             }
         }
 
